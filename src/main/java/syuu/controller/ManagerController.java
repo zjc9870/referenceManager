@@ -20,6 +20,7 @@ import syuu.service.ResearchService;
 import syuu.service.UserService;
 import syuu.service.VO.*;
 import syuu.util.IOUtil;
+import syuu.util.SelectorUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
@@ -247,6 +248,34 @@ public class ManagerController {
     public Map<String,Object> saveReferenceToResearch(String researchId,String[] referenceIdList){
         Map<String,Object> map = new HashMap<String, Object>();
         researchService.saveReferenceToResearch(researchId,referenceIdList);
+        return map;
+    }
+
+
+    @RequestMapping("/getSelectReferenceList")
+    @ResponseBody
+    public Map<String,Object> getSelectReferenceList(String[] selectedIdList){
+        UserVo user = userService.getLoginUser();
+        List<ResearchVo> researchVoList = researchService.getReseachByUser(user.getId());
+        List<JsonNode> firstNode = SelectorUtil.convertReferenceList(researchVoList,selectedIdList);
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("firstNode",firstNode);
+        return map;
+    }
+
+    @RequestMapping("/getShareReferenceList")
+    @ResponseBody
+    public Map<String,Object> getShareReferenceList(String[] referenceIdList){
+        List<ReferenceVo> shareReferenceList = new ArrayList<ReferenceVo>();
+        if(referenceIdList!=null){
+            for(int i=0;i<referenceIdList.length;i++){
+                if(!referenceIdList[i].contains("research")){
+                    shareReferenceList.add(referenceService.getReferenceById(referenceIdList[i]));
+                }
+            }
+        }
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("shareReferenceList",shareReferenceList);
         return map;
     }
 

@@ -58,7 +58,7 @@ function headerHtml(msgNumber){
         "                <ul class=\"am-dropdown-content\">\n" +
         "                </ul>\n" +
         "            </li>\n" +
-        "            <li class=\"kuanjie\"> <a href=\"/manager/allReference\">文献管理</a> <a href=\"/friend/manager?tabId=1\">好友管理</a> <a href=\"/moment/manager\">朋友圈</a> <a href=\"/user/userCenter\">个人中心</a> <a href=\"#\">系统设置</a> </li>\n" +
+        "            <li class=\"kuanjie\"> <a href=\"/manager/allReference\">文献管理</a> <a href=\"/friend/manager?tabId=1\">好友管理</a> <a href=\"/moment/manager?tabId=1\">朋友圈</a> <a href=\"/user/userCenter\">个人中心</a>\n" +
         "\n" +
         "            <li class=\"am-hide-sm-only\" style=\"float: right;\"><a href=\"javascript:;\" id=\"logout\"><span class=\"admin-fullText\">退出登录</span></a></li>\n" +
         "        </ul>\n" +

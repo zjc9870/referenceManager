@@ -1,6 +1,7 @@
 package syuu.dataObject;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -11,6 +12,8 @@ public class Moment {
     private int id;
 
     private String content;
+
+    private Date time;
 
     //记录共享了哪些引用文献
     @ManyToMany
@@ -63,5 +66,13 @@ public class Moment {
 
     public void setBlockList(List<User> blockList) {
         this.blockList = blockList;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
     }
 }

@@ -2543,6 +2543,9 @@ fieldset[disabled] .am-form-field {
 .am-form-group {
   margin-bottom: 1.5rem;
 }
+.am-form-group-comment {
+  margin-bottom: 0;
+}
 /**
  * Checkboxes and radios
  * Indent the labels to position radios/checkboxes as hanging controls.

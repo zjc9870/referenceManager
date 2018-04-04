@@ -64,7 +64,8 @@ public class ExportController {
         String result = "";
         Map<String,Object> resultMap = new HashMap<String, Object>();
         for(int i=0;i<referenceIdList.length;i++){
-            result+=styleService.styleTheReference(Integer.valueOf(referenceIdList[i]),Integer.valueOf(style));
+            int j = i+1;
+            result+="["+j+"]"+styleService.styleTheReference(Integer.valueOf(referenceIdList[i]),Integer.valueOf(style));
             result+="\n";
         }
         resultMap.put("result",result);

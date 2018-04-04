@@ -64,8 +64,11 @@ public class MassageService {
             MassageVo massageVo = convert(massage);
             allMassageVo.add(massageVo);
         }
-
-        return allMassageVo;
+        List<MassageVo> resultVo = new ArrayList<MassageVo>();
+        for(int i=0;i<allMassageVo.size();i++){
+            resultVo.add(allMassageVo.get(allMassageVo.size()-1-i));
+        }
+        return resultVo;
     }
 
     public void deleteMassage(String massageId) {

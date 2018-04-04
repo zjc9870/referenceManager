@@ -21,6 +21,8 @@ public class UserService {
 
     @Autowired
     HttpSession session;
+    @Autowired
+    FriendService friendService;
     /**
      * 获取所有
      * @return
@@ -44,7 +46,7 @@ public class UserService {
 
     public UserVo getLoginUser() {
          String userid = (String) session.getAttribute(WebSecurityConfig.SESSION_KEY);
-         UserVo uservo = new UserVo(userRepository.findOne(Integer.valueOf(userid)));
+         UserVo uservo = getUserById(userRepository.findOne(Integer.valueOf(userid)).getId());
          return uservo;
     }
 
@@ -58,10 +60,14 @@ public class UserService {
     }
 
     public UserVo getUserById(String id) {
-         return new UserVo(userRepository.findOne(Integer.valueOf(id)));
+        UserVo userVo = new UserVo(userRepository.findOne(Integer.valueOf(id)));
+        userVo.setFriendList(friendService.getFriendByUser(userVo));
+        return userVo;
     }
 
     public UserVo getUserById(int id) {
-        return new UserVo(userRepository.findOne(id));
+        UserVo userVo = new UserVo(userRepository.findOne(id));
+        userVo.setFriendList(friendService.getFriendByUser(userVo));
+        return userVo;
     }
 }

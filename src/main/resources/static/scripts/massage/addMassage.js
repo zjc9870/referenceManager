@@ -46,7 +46,7 @@ function selectFriend(){
     }
     $.ajax({
         type:"POST",
-        url: "/massage/getSelectFriendList",
+        url: "/friend/getAllFriendList",
         data: {selectedIdList: selectedIdList},
         traditional:true,
         dataType:"json",
@@ -70,7 +70,7 @@ function selectReference(){
     }
     $.ajax({
         type:"POST",
-        url: "/massage/getSelectReferenceList",
+        url: "/manager/getSelectReferenceList",
         data: {selectedIdList: selectedIdList},
         traditional:true,
         dataType:"json",
@@ -103,17 +103,17 @@ function changeShareReference(){
 function changeToUserContent(friendIdList){
     $.ajax({
         type:"POST",
-        url: "/massage/getToUserList",
+        url: "/friend/getSelectFriendList",
         traditional:true,
         data: {friendIdList:friendIdList},
         dataType:"json",
         success: function(data){
-            var toUserList = data.toUserList;
+            var selectFriendList = data.selectFriendList;
             $('#friendSelectPanel').hide();
             var str = "";
 
-            for(var i=0;i<toUserList.length;i++){
-                str+="<div class=\"am-btn am-btn-secondary am-radius\" style='cursor: default' value=\""+toUserList[i].id+"\" id='friend"+toUserList[i].id+"'>"+toUserList[i].username+"<span class=\"am-icon-remove\" onclick='removeThis(this)' style='cursor: pointer'/></div>";
+            for(var i=0;i<selectFriendList.length;i++){
+                str+="<div class=\"am-btn am-btn-secondary am-radius\" style='cursor: default' value=\""+selectFriendList[i].id+"\" id='friend"+selectFriendList[i].id+"'>"+selectFriendList[i].username+"<span class=\"am-icon-remove\" onclick='removeThis(this)' style='cursor: pointer'/></div>";
             }
             str+="<div class=\"am-btn am-btn-success am-radius\" onclick='selectFriend()'>添加接收人</div>";
             $('#friendListPanel').html(str);
@@ -126,7 +126,7 @@ function changeToUserContent(friendIdList){
 function changeShareReferenceContent(referenceIdList){
     $.ajax({
         type:"POST",
-        url: "/massage/getShareReferenceList",
+        url: "/manager/getShareReferenceList",
         traditional:true,
         data: {referenceIdList:referenceIdList},
         dataType:"json",

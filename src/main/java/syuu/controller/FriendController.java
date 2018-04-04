@@ -111,4 +111,29 @@ public class FriendController {
         ModelAndView mv = new ModelAndView("redirect:/friend/manager?tabId=2");
         return mv;
     }
+    //获取选择的朋友vo
+    @RequestMapping("/getAllFriendList")
+    @ResponseBody
+    public Map<String,Object> getAllFriendList(String[] selectedIdList){
+        UserVo user = userService.getLoginUser();
+        List<UserVo> friendList = friendService.getFriendByUser(user);
+        List<JsonNode> firstNode = SelectorUtil.convertFriendList(friendList,selectedIdList);
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("firstNode",firstNode);
+        return map;
+    }
+
+    @RequestMapping("/getSelectFriendList")
+    @ResponseBody
+    public Map<String,Object> getSelectFriendList(String[] friendIdList){
+        List<UserVo> selectFriendList = new ArrayList<UserVo>();
+        if(friendIdList!=null){
+            for(int i=0;i<friendIdList.length;i++){
+                selectFriendList.add(userService.getUserById(friendIdList[i]));
+            }
+        }
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("selectFriendList",selectFriendList);
+        return map;
+    }
 }
