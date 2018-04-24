@@ -25,6 +25,7 @@ public class Reference {
     private Integer qh;
     private String hydd;
     private String lx;
+    private String dblpStr;
 
     public Reference(ReferenceVo referenceVo) {
         if(referenceVo.getId()!=null){
@@ -41,6 +42,14 @@ public class Reference {
         this.jh = referenceVo.getJh();
         this.hydd = referenceVo.getHydd();
         this.lx = referenceVo.getLx();
+        if(referenceVo.getDblpStr()!=null){
+            if(!referenceVo.getDblpStr().trim().equals("")){
+                this.dblpStr = referenceVo.getDblpStr();
+            }
+        }
+        if(referenceVo.getIsPartOf()!=null){
+            this.conference = referenceVo.getIsPartOf();
+        }
     }
 
     public Reference(){
@@ -150,5 +159,13 @@ public class Reference {
 
     public void setLx(String lx) {
         this.lx = lx;
+    }
+
+    public String getDblpStr() {
+        return dblpStr;
+    }
+
+    public void setDblpStr(String dblpStr) {
+        this.dblpStr = dblpStr;
     }
 }

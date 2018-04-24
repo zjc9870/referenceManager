@@ -11,7 +11,9 @@ import syuu.repository.UserRepository;
 import syuu.service.VO.ReferenceVo;
 import syuu.service.VO.ResearchVo;
 import syuu.service.VO.UserVo;
+import syuu.util.StringUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +31,8 @@ public class ResearchService {
 
     @Autowired
     ReferenceService referenceService;
+    @Autowired
+    SearchService searchService;
 
 
     public List<ResearchVo> getReseachByUser(int userId){
@@ -84,5 +88,21 @@ public class ResearchService {
             Reference reference = referenceRepository.findOne(Integer.valueOf(referenceIdList[i]));
             copyReferenceToResearch(reference,research);
         }
+    }
+
+    public boolean saveNewReferenceToResearch(String researchId, String dblpStr) throws IOException {
+        String keywords = StringUtil.getKeywordsByDblpStr(dblpStr);
+        ReferenceVo referenceVo = new ReferenceVo();
+        boolean result = false;
+        List<ReferenceVo> referenceVoList = searchService.getResultByKeywords(keywords,0);
+        if(referenceVoList.size()!=0){
+            referenceVo = referenceVoList.get(0);
+            referenceVo.setId(0);
+            referenceVo.setResearchId(Integer.valueOf(researchId));
+            Reference reference = referenceService.saveReference(referenceVo);
+            result = true;
+        }
+
+        return result;
     }
 }

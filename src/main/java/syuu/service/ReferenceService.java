@@ -37,10 +37,10 @@ public class ReferenceService {
         return referenceVoList;
     }
 
-    public void saveReference(ReferenceVo referenceVo) {
+    public Reference saveReference(ReferenceVo referenceVo) {
         Reference reference = new Reference(referenceVo);
         reference.setResearch(researchRepository.findOne(referenceVo.getResearchId()));
-        referenceRepository.save(reference);
+        return referenceRepository.save(reference);
     }
 
     public ReferenceVo getReferenceById(String referenceId) {
