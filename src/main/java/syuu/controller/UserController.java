@@ -7,10 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import syuu.configuration.WebSecurityConfig;
 import syuu.dataObject.Massage;
-import syuu.service.FriendService;
-import syuu.service.MassageService;
-import syuu.service.ResearchService;
-import syuu.service.UserService;
+import syuu.service.*;
 import syuu.service.VO.ResearchVo;
 import syuu.service.VO.UserVo;
 
@@ -40,6 +37,9 @@ public class UserController {
 
     @Autowired
     MassageService massageService;
+
+    @Autowired
+    MomentService momentService;
 
     @GetMapping("/")
     public String index(@SessionAttribute(WebSecurityConfig.SESSION_KEY) String account, Model model) {
@@ -96,10 +96,12 @@ public class UserController {
         List<ResearchVo> researchVoList = researchService.getReseachByUser(user.getId());
         List<UserVo> friendList = friendService.getFriendByUser(user);
         int msgNumber = massageService.getNumberOfMassage();
+        int ydCommentNum=momentService.getydCommentNum(user);
         map.put("researchVoList",researchVoList);
         map.put("friendList",friendList);
         map.put("username",user.getUsername());
         map.put("msgNumber",msgNumber);
+        map.put("ydCommentNum",ydCommentNum);
         return map;
     }
 }
