@@ -7,7 +7,7 @@ function init(){
         traditional:true,
         dataType:"json",
         success: function(data){
-            headerHtml(data.msgNumber);
+            headerHtml(data.msgNumber,data.ydCommentNum);
 
             $('#hello').text("欢迎回来!"+data.username);
             $('#hello').val(data.username);
@@ -44,11 +44,21 @@ function init(){
     });
 }
 
-function headerHtml(msgNumber){
+function headerHtml(msgNumber,ydCommentNum){
     var msgSpan = "";
+    var ydComSpan="";
     if(msgNumber!=0){
         msgSpan = "<span class=\"am-badge am-badge-danger am-round\">"+msgNumber+"</span>"
     }
+    if(ydCommentNum!=0)
+    {
+        ydComSpan= "<span class=\"am-badge am-badge-danger am-round\">"+ydCommentNum+"</span>"
+    }
+    else
+    {
+        ydComSpan="";
+    }
+
     $('#header').html("\n" +
         "    <div class=\"am-topbar-brand\"></div>\n" +
         "    <div class=\"am-collapse am-topbar-collapse\" id=\"topbar-collapse\">\n" +
@@ -58,7 +68,7 @@ function headerHtml(msgNumber){
         "                <ul class=\"am-dropdown-content\">\n" +
         "                </ul>\n" +
         "            </li>\n" +
-        "            <li class=\"kuanjie\"> <a href=\"/search/searchPage\">文献搜索</a> <a href=\"/manager/allReference\">文献管理</a> <a href=\"/friend/manager?tabId=1\">好友管理</a> <a href=\"/moment/manager?tabId=1\">朋友圈</a> <a href=\"/user/userCenter\">个人中心</a>\n" +
+        "            <li class=\"kuanjie\"> <a href=\"/manager/allReference\">文献管理</a> <a href=\"/friend/manager?tabId=1\">好友管理</a> <a href=\"/moment/manager?tabId=1\">朋友圈"+ydComSpan+"</a> <a href=\"/user/userCenter\">个人中心</a>\n" +
         "\n" +
         "            <li class=\"am-hide-sm-only\" style=\"float: right;\"><a href=\"javascript:;\" id=\"logout\"><span class=\"admin-fullText\">退出登录</span></a></li>\n" +
         "        </ul>\n" +
