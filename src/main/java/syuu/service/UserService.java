@@ -32,7 +32,7 @@ public class UserService {
          String result = "用户不存在";
          if(userList.size()>0){
              for(User user:userList){
-                 if(user.getUsername().equals(username)){
+                 if(user.getLoginname().equals(username)){
                      if(user.getPassword().equals(password)){
                          result = String.valueOf(user.getId());
                      }else{

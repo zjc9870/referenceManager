@@ -23,12 +23,6 @@ import java.util.Map;
 @RequestMapping("/user")
 public class UserController {
 
-
-    /**
-     *
-     */
-
-
     @Autowired
     UserService userService;
 

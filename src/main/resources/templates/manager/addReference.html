@@ -14,10 +14,12 @@
     <link rel="stylesheet" th:href="@{/css/amazeui.css}"/>
     <link rel="stylesheet" th:href="@{/css/admin.css}"/>
     <link rel="stylesheet" th:href="@{/css/paginate/style.css}"/>
+    <link rel="stylesheet" th:href="@{/css/sweetalert/sweetalert.css}"/>
     <script th:src="@{/scripts/jquery-2.1.4.js}"></script>
     <script th:src="@{/scripts/amaz/amazeui.min.js}"></script>
     <script th:src="@{/scripts/amaz/app.js}"></script>
     <script th:src="@{/scripts/jquery-validation/js/jquery.validate.js}"></script>
+    <script th:src="@{/scripts/sweetalert/sweetalert.min.js}"></script>
 </head>
 
 <body>
@@ -25,7 +27,7 @@
 </header>
 <div class="am-cf admin-main">
     <div class="nav-navicon admin-main admin-sidebar">
-        <div style="color:#aeb2b7; margin: 10px 0 0 0;" id="hello"> </div>
+        <div style="color:#333333; margin: 10px 0 0 0;" id="hello"> </div>
         <div class="sideMenu" id="sideMenu">
         </div>
     </div>
@@ -60,90 +62,119 @@
 
             </div>
 
+            <div class="am-tabs am-margin">
+                <ul class="am-tabs-nav am-nav am-nav-tabs">
+                    <li id="li1" class="am-active"><a href="#tab1" >手动输入</a></li>
+                    <li id="li2" ><a href="#tab2">自动识别</a></li>
+                </ul>
+                <div class="am-tabs-bd">
+                    <input type="hidden" id="tabId" th:value="${tabId}" />
+                    <div class="am-tab-panel am-fade am-in am-active" id="tab1">
+                        <div class="fbneirong">
+                            <form enctype="multipart/form-data" class="am-form" id="referenceForm" action="/manager/saveReference" method="post">
+                                <input type="hidden" id="id" name="id" th:value="0" />
+                                <div class="am-form-group am-cf">
+                                    <div class="zuo">标题：</div>
+                                    <div class="you">
+                                        <input type="text" class="am-input-sm" id="name" name="name" placeholder="请输入标题"/>
+                                    </div>
+                                </div>
 
-            <div class="fbneirong">
-                <form enctype="multipart/form-data" class="am-form" id="referenceForm" action="/manager/saveReference" method="post">
-                    <input type="hidden" id="id" name="id" th:value="0" />
-                    <div class="am-form-group am-cf">
-                        <div class="zuo">标题：</div>
-                        <div class="you">
-                            <input type="text" class="am-input-sm" id="name" name="name" placeholder="请输入标题"/>
+                                <div class="am-form-group am-cf">
+                                    <div class="zuo">作者：</div>
+                                    <div class="you">
+                                        <input type="text" class="am-input-sm" id="authors" name="authors" placeholder="请输入作者"/>
+                                    </div>
+                                </div>
+
+                                <div class="am-form-group am-cf">
+                                    <div class="zuo">年份：</div>
+                                    <div class="you">
+                                        <input type="text" class="am-input-sm" id="year" name="year" placeholder="请输入年份"/>
+                                    </div>
+                                </div>
+
+                                <div class="am-form-group am-cf">
+                                    <div class="zuo">会议名：</div>
+                                    <div class="you">
+                                        <input type="text" class="am-input-sm" id="conference" name="conference" placeholder="请输入会议名"/>
+                                    </div>
+                                </div>
+
+                                <div class="am-form-group am-cf">
+                                    <div class="zuo">会议地点：</div>
+                                    <div class="you">
+                                        <input type="text" class="am-input-sm" id="hydd" name="hydd" placeholder="请输入会议地点"/>
+                                    </div>
+                                </div>
+
+                                <div class="am-form-group am-cf">
+                                    <div class="zuo">卷号：</div>
+                                    <div class="you">
+                                        <input type="text" class="am-input-sm" id="jh" name="jh" placeholder="请输入卷号"/>
+                                    </div>
+                                </div>
+                                <div class="am-form-group am-cf">
+                                    <div class="zuo">期号：</div>
+                                    <div class="you">
+                                        <input type="text" class="am-input-sm" id="qh" name="qh" placeholder="请输入期号"/>
+                                    </div>
+                                </div>
+                                <div class="am-form-group am-cf">
+                                    <div class="zuo">开始页码：</div>
+                                    <div class="you">
+                                        <input type="text" class="am-input-sm" id="beginPage" name="beginPage" placeholder="请输入开始页"/>
+                                    </div>
+                                </div>
+
+                                <div class="am-form-group am-cf">
+                                    <div class="zuo">结束页码：</div>
+                                    <div class="you">
+                                        <input type="text" class="am-input-sm" id="endPage" name="endPage" placeholder="请输入结束页"/>
+                                    </div>
+                                </div>
+                                <div class="am-form-group am-cf">
+                                    <div class="zuo">文献来源：</div>
+                                    <div class="you">
+                                        <select data-am-selected="{btnSize: 'sm'}" id="lx" name="lx" >
+                                            <option value="书籍" >书籍</option>
+                                            <option value="会议" >会议</option>
+                                            <option value="期刊杂志" >期刊杂志</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <input type="hidden" id="researchId" name="researchId" th:value="${researchVo.id}" />
+
+                                <div class="am-form-group am-cf">
+                                    <div class="you" style="margin-left: 11%;">
+                                        <button type="submit" class="am-btn am-btn-success am-radius">新建文献条目</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
 
-                    <div class="am-form-group am-cf">
-                        <div class="zuo">作者：</div>
-                        <div class="you">
-                            <input type="text" class="am-input-sm" id="authors" name="authors" placeholder="请输入作者"/>
+                    <div class="am-tab-panel am-fade am-in am-active" id="tab2">
+                        <div class="fbneirong">
+                            <form class="am-form">
+                                <div class="am-form-group am-cf">
+                                    <div class="zuo">dblp条目：</div>
+                                    <div class="you">
+                                        <textarea rows="10" placeholder="请输入dblp条目" id="content"></textarea>
+                                    </div>
+                                </div>
+                                <div class="am-form-group am-cf">
+                                    <div class="you" style="margin-left: 11%;">
+                                        <div id="submit" class="am-btn am-btn-success am-radius">新建文献条目</div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
-
-                    <div class="am-form-group am-cf">
-                        <div class="zuo">年份：</div>
-                        <div class="you">
-                            <input type="text" class="am-input-sm" id="year" name="year" placeholder="请输入年份"/>
-                        </div>
-                    </div>
-
-                    <div class="am-form-group am-cf">
-                        <div class="zuo">会议名：</div>
-                        <div class="you">
-                            <input type="text" class="am-input-sm" id="conference" name="conference" placeholder="请输入会议名"/>
-                        </div>
-                    </div>
-
-                    <div class="am-form-group am-cf">
-                        <div class="zuo">会议地点：</div>
-                        <div class="you">
-                            <input type="text" class="am-input-sm" id="hydd" name="hydd" placeholder="请输入会议地点"/>
-                        </div>
-                    </div>
-
-                    <div class="am-form-group am-cf">
-                        <div class="zuo">卷号：</div>
-                        <div class="you">
-                            <input type="text" class="am-input-sm" id="jh" name="jh" placeholder="请输入卷号"/>
-                        </div>
-                    </div>
-                    <div class="am-form-group am-cf">
-                        <div class="zuo">期号：</div>
-                        <div class="you">
-                            <input type="text" class="am-input-sm" id="qh" name="qh" placeholder="请输入期号"/>
-                        </div>
-                    </div>
-                    <div class="am-form-group am-cf">
-                        <div class="zuo">开始页码：</div>
-                        <div class="you">
-                            <input type="text" class="am-input-sm" id="beginPage" name="beginPage" placeholder="请输入开始页"/>
-                        </div>
-                    </div>
-
-                    <div class="am-form-group am-cf">
-                        <div class="zuo">结束页码：</div>
-                        <div class="you">
-                            <input type="text" class="am-input-sm" id="endPage" name="endPage" placeholder="请输入结束页"/>
-                        </div>
-                    </div>
-                    <div class="am-form-group am-cf">
-                        <div class="zuo">文献来源：</div>
-                        <div class="you">
-                            <select data-am-selected="{btnSize: 'sm'}" id="lx" name="lx" >
-                                <option value="书籍" >书籍</option>
-                                <option value="会议" >会议</option>
-                                <option value="期刊杂志" >期刊杂志</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <input type="hidden" id="researchId" name="researchId" th:value="${researchVo.id}" />
-
-                    <div class="am-form-group am-cf">
-                        <div class="you" style="margin-left: 11%;">
-                            <button type="submit" class="am-btn am-btn-success am-radius">新建文献条目</button>
-                        </div>
-                    </div>
-                </form>
+                </div>
             </div>
+
 
             <div class="foods">
             </div>

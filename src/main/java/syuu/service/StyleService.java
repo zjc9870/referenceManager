@@ -7,6 +7,7 @@ import syuu.dataObject.Style;
 import syuu.repository.ReferenceRepository;
 import syuu.repository.StyleRepository;
 import syuu.service.VO.ReferenceVo;
+import syuu.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,16 +49,17 @@ public class StyleService {
         return allStyle;
     }
 
-    public String styleTheReference(int referenceId, int styleId) {
+    public String[] styleTheReference(int referenceId, int styleId) {
         Reference reference = referenceRepository.findOne(referenceId);
         Style style = styleRepository.findOne(styleId);
+        String errorMsg = "";
         //拆分作者
         String[] authorList = reference.getAuthors().split(",");
         for(int i=0; i<authorList.length; i++){
             authorList[i]=authorList[i].trim();
         }
         if(style.getUpperFirstname().equals("true")){
-            for(int i=1;i<authorList.length-1;i++){
+            for(int i=0;i<authorList.length;i++){
                 char firstname = authorList[i].charAt(0);
                 if(firstname>='a'&&firstname<='z'){
                     firstname = (char)(firstname-32);
@@ -99,7 +101,7 @@ public class StyleService {
                 author+=","+authorList[i];
             }
             if(authorList.length>1&&style.getAndLastAuthor().equals("true")){
-                author+=",and"+authorList[authorList.length-1];
+                author+=",and "+authorList[authorList.length-1];
             }else{
                 author+=","+authorList[authorList.length-1];
             }
@@ -111,29 +113,83 @@ public class StyleService {
         String result = "";
         for(int j = 0; j<exps.length; j++){
             if(exps[j].equals("WZBT")){
-                exps[j] = reference.getName().trim();
+                if(reference.getName()==null){
+                    errorMsg+="文章标题为空。";
+                }else if(reference.getName().equals("")) {
+                    errorMsg+="文章标题为空。";
+                }else{
+                    exps[j] = reference.getName().trim();
+                }
             }else if(exps[j].equals("ZZ")){
                 exps[j] = author;
             }else if(exps[j].equals("NF")){
-                exps[j] = String.valueOf(reference.getYear()).trim();
+                if(reference.getYear()==null){
+                    errorMsg+="年份为空。";
+                }
+                else if(reference.getYear()==0){
+                    errorMsg+="年份为空。";
+                }else{
+                    exps[j] = String.valueOf(reference.getYear()).trim();
+                }
             }else if(exps[j].equals("QSY")){
-                exps[j] = String.valueOf(reference.getBeginPage()).trim();
+                if(reference.getBeginPage()==null){
+                    errorMsg+="起始页为空。";
+                }
+                else if(reference.getBeginPage()==0){
+                    errorMsg+="起始页为空。";
+                }else{
+                    exps[j] = String.valueOf(reference.getBeginPage()).trim();
+                }
             }else if(exps[j].equals("MWY")){
-                exps[j] = String.valueOf(reference.getEndPage()).trim();
+                if(reference.getEndPage()==null){
+                    errorMsg+="末尾页为空。";
+                }
+                else if(reference.getEndPage()==0){
+                    errorMsg+="末尾页为空。";
+                }else{
+                    exps[j] = String.valueOf(reference.getEndPage()).trim();
+                }
             }else if(exps[j].equals("HYM")){
-                exps[j] = reference.getConference().trim();
+                if(reference.getConference()==null){
+                    errorMsg+="文献来源为空。";
+                }else if(reference.getConference().equals("")) {
+                    errorMsg+="文章来源为空。";
+                }else{
+                    exps[j] = reference.getConference().trim();
+                }
             }else if(exps[j].equals("QKM")){
 
             }else if(exps[j].equals("QH")){
-                exps[j] = String.valueOf(reference.getQh()).trim();
+                if(reference.getQh()==null){
+                    errorMsg+="期号为空。";
+                }
+                else if(reference.getQh()==0){
+                    errorMsg+="期号为空。";
+                }else{
+                    exps[j] = String.valueOf(reference.getQh()).trim();
+                }
             }else if(exps[j].equals("JH")){
-                exps[j] = String.valueOf(reference.getQh()).trim();
+                if(reference.getJh()==null){
+                    errorMsg+="卷号为空。";
+                }
+                else if(reference.getJh()==0){
+                    errorMsg+="卷号为空。";
+                }else{
+                    exps[j] = String.valueOf(reference.getJh()).trim();
+                }
             }else if(exps[j].equals("HYDD")){
-                exps[j] = reference.getHydd().trim();
+                if(reference.getHydd()==null){
+                    errorMsg+="会议地点为空。";
+                }else if(reference.getHydd().equals("")) {
+                    errorMsg+="会议地点为空。";
+                }else{
+                    exps[j] = reference.getHydd().trim();
+                }
             }
             result += exps[j];
         }
-        return result;
+        String[] resultAndErrorMsg = {result,errorMsg};
+        return resultAndErrorMsg;
     }
 
     public void saveStyle(String expression, String name, String andLastAuthor, String etalAuthor, String upperFirstname, String upperMiddlename) {
@@ -158,5 +214,30 @@ public class StyleService {
         }else{
             return "名称可使用";
         }
+    }
+
+    public String[] getResultAndErrorMassage(String[] referenceIdList,String style){
+        String result = "";
+        String errorMsg = "";
+        for(int i=0;i<referenceIdList.length;i++){
+            int j = i+1;
+            String[] resultAndErrormsg = styleTheReference(Integer.valueOf(referenceIdList[i]),Integer.valueOf(style));
+            result+="["+j+"]"+resultAndErrormsg[0];
+            result+="\n";
+            if(!resultAndErrormsg[1].equals("")){
+                errorMsg+="第"+j+"条文献存在如下问题:"+resultAndErrormsg[1]+"\n";
+            }
+        }
+        String[] newResultAndErrorMsg = {result,errorMsg};
+        return newResultAndErrorMsg;
+
+    }
+    //通过dblp字符串来解析reference
+    public void convertDblpStr(String dblpStr) {
+        String author = StringUtil.getAuthorByDblpStr(dblpStr);
+        String title = StringUtil.getTitleByDblpStr(dblpStr);
+        String year = StringUtil.getYearByDblpStr(dblpStr);
+        String[] pagination = StringUtil.getPaginationByDblpStr(dblpStr);
+        Reference reference = new Reference();
     }
 }

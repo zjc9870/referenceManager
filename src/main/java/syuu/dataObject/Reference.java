@@ -3,6 +3,7 @@ package syuu.dataObject;
 import syuu.service.VO.ReferenceVo;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="reference")
@@ -19,12 +20,12 @@ public class Reference {
     private Integer beginPage;
     private Integer endPage;
     private String conference;
-    private String attachment;
     private int year;
     private Integer jh;
     private Integer qh;
     private String hydd;
     private String lx;
+    private String dblpStr;
 
     public Reference(ReferenceVo referenceVo) {
         if(referenceVo.getId()!=null){
@@ -36,11 +37,18 @@ public class Reference {
         this.endPage = referenceVo.getEndPage();
         this.conference = referenceVo.getConference();
         this.year = referenceVo.getYear();
-        this.attachment = referenceVo.getFulltext();
         this.qh = referenceVo.getQh();
         this.jh = referenceVo.getJh();
         this.hydd = referenceVo.getHydd();
         this.lx = referenceVo.getLx();
+        if(referenceVo.getDblpStr()!=null){
+            if(!referenceVo.getDblpStr().trim().equals("")){
+                this.dblpStr = referenceVo.getDblpStr();
+            }
+        }
+        if(referenceVo.getIsPartOf()!=null){
+            this.conference = referenceVo.getIsPartOf();
+        }
     }
 
     public Reference(){
@@ -104,20 +112,12 @@ public class Reference {
         this.conference = conference;
     }
 
-    public int getYear() {
+    public Integer getYear() {
         return year;
     }
 
     public void setYear(int year) {
         this.year = year;
-    }
-
-    public String getAttachment() {
-        return attachment;
-    }
-
-    public void setAttachment(String attachment) {
-        this.attachment = attachment;
     }
 
     public String getHydd() {
@@ -150,5 +150,13 @@ public class Reference {
 
     public void setLx(String lx) {
         this.lx = lx;
+    }
+
+    public String getDblpStr() {
+        return dblpStr;
+    }
+
+    public void setDblpStr(String dblpStr) {
+        this.dblpStr = dblpStr;
     }
 }

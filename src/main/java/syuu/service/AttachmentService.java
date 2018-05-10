@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import syuu.configuration.Settings;
 import syuu.dataObject.Attachment;
+import syuu.dataObject.AttachmentReference;
+import syuu.repository.AttachmentReferenceRepository;
 import syuu.repository.AttachmentRepository;
 import syuu.service.VO.AttachmentVo;
 import syuu.util.IOUtil;
@@ -20,6 +22,8 @@ public class AttachmentService {
     Settings settings;
     @Autowired
     AttachmentRepository attachmentRepository;
+    @Autowired
+    AttachmentReferenceRepository attachmentReferenceRepository;
     public void addAttachment(String referenceId, MultipartFile uploadFile) throws IOException {
         String filePath = settings.getAttachmentPath();
         String fileName = uploadFile.getOriginalFilename();
@@ -29,14 +33,19 @@ public class AttachmentService {
         attachment.setPath(localPath);
         attachment.setTime(new Date());
         attachment.setXgId(Integer.valueOf(referenceId));
-        attachmentRepository.save(attachment);
+        attachment = attachmentRepository.save(attachment);
+        AttachmentReference attachmentReference = new AttachmentReference();
+        attachmentReference.setAttachmentId(attachment.getId());
+        attachmentReference.setReferenceId(Integer.valueOf(referenceId));
+        attachmentReferenceRepository.save(attachmentReference);
     }
 
     public List<AttachmentVo> getAttachmentByXgId(String referenceId) {
-        List<Attachment> attachmentList = attachmentRepository.findByXgId(Integer.valueOf(referenceId));
+        List<AttachmentReference> attachmenRefernceList = attachmentReferenceRepository.findByReferenceId(Integer.valueOf(referenceId));
         List<AttachmentVo> attachmentVoList = new ArrayList<AttachmentVo>();
-        if(attachmentList.size()>0){
-            for(Attachment attachment:attachmentList){
+        if(attachmenRefernceList.size()>0){
+            for(AttachmentReference attachmentReference:attachmenRefernceList){
+                Attachment attachment = attachmentRepository.findOne(attachmentReference.getAttachmentId());
                 attachmentVoList.add(new AttachmentVo(attachment));
             }
         }

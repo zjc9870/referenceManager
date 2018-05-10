@@ -84,8 +84,6 @@ public class ManagerController {
         mv.addObject("researchVo",researchVo);
         List<ResearchVo> allResearchs = researchService.getReseachByUser(userVo.getId());
         mv.addObject("allResearchs",allResearchs);
-
-
         return mv;
     }
 
@@ -276,6 +274,34 @@ public class ManagerController {
         }
         Map<String,Object> map = new HashMap<String, Object>();
         map.put("shareReferenceList",shareReferenceList);
+        return map;
+    }
+
+    @RequestMapping("/saveNewReferenceToResearch")
+    @ResponseBody
+    public Map<String,Object> saveNewReferenceToResearch(String researchId,String dblpStr) throws IOException {
+        Map<String,Object> map = new HashMap<String, Object>();
+        researchService.saveNewReferenceToResearch(researchId,dblpStr);
+        return map;
+    }
+
+    @RequestMapping("/addReferenceDblp")
+    @ResponseBody
+    public Map<String,Object> addReferenceDblp(String researchId,String dblpStr) throws IOException {
+        Map map = new HashMap<String,Object>();
+        String[] dblpStrs = dblpStr.split("\n");
+        int errorCount = 0;
+        for(int i=0;i<dblpStrs.length;i++){
+            if(!researchService.saveNewReferenceToResearch(researchId,dblpStrs[i])){
+                errorCount++;
+            }
+        }
+        if(errorCount==dblpStrs.length){
+            map.put("errorMsg","无法导入");
+        }else{
+            map.put("errorMsg","导入成功");
+        }
+        map.put("errorCount",errorCount);
         return map;
     }
 

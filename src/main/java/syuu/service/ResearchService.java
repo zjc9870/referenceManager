@@ -2,16 +2,18 @@ package syuu.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import syuu.dataObject.Reference;
-import syuu.dataObject.Research;
-import syuu.dataObject.User;
+import syuu.dataObject.*;
+import syuu.repository.AttachmentReferenceRepository;
 import syuu.repository.ReferenceRepository;
 import syuu.repository.ResearchRepository;
 import syuu.repository.UserRepository;
+import syuu.service.VO.AttachmentVo;
 import syuu.service.VO.ReferenceVo;
 import syuu.service.VO.ResearchVo;
 import syuu.service.VO.UserVo;
+import syuu.util.StringUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +31,14 @@ public class ResearchService {
 
     @Autowired
     ReferenceService referenceService;
-
+    @Autowired
+    SearchService searchService;
+    @Autowired
+    AttachmentService attachmentService;
+    @Autowired
+    AttachmentReferenceRepository attachmentReferenceRepository;
+    @Autowired
+    StyleService styleService;
 
     public List<ResearchVo> getReseachByUser(int userId){
         User user = userRepository.findOne(userId);
@@ -71,7 +80,16 @@ public class ResearchService {
         Reference reference1 = new Reference(new ReferenceVo(reference));
         reference1.setId(0);
         reference1.setResearch(research);
-        referenceRepository.save(reference1);
+        List<AttachmentVo> attachmentList = attachmentService.getAttachmentByXgId(String.valueOf(reference.getId()));
+
+        reference1 = referenceRepository.save(reference1);
+
+        for(AttachmentVo attachment:attachmentList){
+            AttachmentReference attachmentReference = new AttachmentReference();
+            attachmentReference.setAttachmentId(attachment.getId());
+            attachmentReference.setReferenceId(reference1.getId());
+            attachmentReferenceRepository.save(attachmentReference);
+        }
     }
 
     public void deleteResearch(String researchId) {
@@ -84,5 +102,22 @@ public class ResearchService {
             Reference reference = referenceRepository.findOne(Integer.valueOf(referenceIdList[i]));
             copyReferenceToResearch(reference,research);
         }
+    }
+
+    public boolean saveNewReferenceToResearch(String researchId, String dblpStr) throws IOException {
+        String keywords = StringUtil.getKeywordsByDblpStr(dblpStr);
+        ReferenceVo referenceVo = new ReferenceVo();
+        boolean result = false;
+        List<ReferenceVo> referenceVoList = searchService.getResultByKeywords(keywords,0);
+        if(referenceVoList.size()!=0){
+            referenceVo = referenceVoList.get(0);
+            referenceVo.setId(0);
+            referenceVo.setResearchId(Integer.valueOf(researchId));
+            Reference reference = referenceService.saveReference(referenceVo);
+            result = true;
+        }else{
+            styleService.convertDblpStr(dblpStr);
+        }
+        return result;
     }
 }

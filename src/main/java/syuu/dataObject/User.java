@@ -13,6 +13,7 @@ public class User {
     private int id;
     private String username;
     private String password;
+    private String loginname;
 
 
     public int getId() {
@@ -39,4 +40,11 @@ public class User {
         this.password = password;
     }
 
+    public String getLoginname() {
+        return loginname;
+    }
+
+    public void setLoginname(String loginname) {
+        this.loginname = loginname;
+    }
 }

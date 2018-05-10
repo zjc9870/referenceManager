@@ -17,8 +17,12 @@ public class ReferenceVo {
     private String fulltext;
     private Integer researchId;
     private String lx;
+    private String isPartOf;
+    private String downloadUrl;
     private int year;
+    private String dblpStr;
 
+    public ReferenceVo(){};
     public ReferenceVo(Reference reference) {
         this.id = reference.getId();
         this.name = reference.getName();
@@ -26,7 +30,6 @@ public class ReferenceVo {
         this.beginPage = reference.getBeginPage();
         this.endPage = reference.getEndPage();
         this.conference = reference.getConference();
-        this.fulltext = reference.getAttachment();
         this.researchId = reference.getResearch().getId();
         this.year = reference.getYear();
         this.hydd = reference.getHydd();
@@ -35,7 +38,7 @@ public class ReferenceVo {
         this.lx = reference.getLx();
     }
 
-    public ReferenceVo(String name, String authors, String year, String conference,String hydd,String qh, String jh, String beginPage, String endPage, String researchId, String id,String lx) {
+    public ReferenceVo(String name, String authors, String year, String conference,String hydd,String qh, String jh, String beginPage, String endPage, String researchId, String id,String lx) throws NumberFormatException{
         this.name = name;
         this.authors = authors;
         this.year = Integer.valueOf(year);
@@ -74,7 +77,7 @@ public class ReferenceVo {
     }
 
     public void setAuthors(String authors) {
-        authors = authors;
+        this.authors = authors;
     }
 
     public Integer getBeginPage() {
@@ -155,5 +158,29 @@ public class ReferenceVo {
 
     public void setLx(String lx) {
         this.lx = lx;
+    }
+
+    public String getIsPartOf() {
+        return isPartOf;
+    }
+
+    public void setIsPartOf(String isPartOf) {
+        this.isPartOf = isPartOf;
+    }
+
+    public String getDownloadUrl() {
+        return downloadUrl;
+    }
+
+    public void setDownloadUrl(String downloadUrl) {
+        this.downloadUrl = downloadUrl;
+    }
+
+    public String getDblpStr() {
+        return dblpStr;
+    }
+
+    public void setDblpStr(String dblpStr) {
+        this.dblpStr = dblpStr;
     }
 }

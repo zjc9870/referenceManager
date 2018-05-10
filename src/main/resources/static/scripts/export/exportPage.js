@@ -19,7 +19,12 @@ $(document).ready(function (){
             data: {referenceIdList:referenceIdList ,style: styleId},
             dataType:"json",
             success: function(data){
-                $('#dcwx').val(data.result);
+
+                if(data.errorMassage!=""){
+                    $('#dcwx').val(data.result+"\n"+data.errorMassage);
+                }else{
+                    $('#dcwx').val(data.result);
+                }
             }
         });
     });

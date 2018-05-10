@@ -61,14 +61,10 @@ public class ExportController {
     @RequestMapping("/output")
     @ResponseBody
         public Map<String,Object> output(String[] referenceIdList, String style){
-        String result = "";
         Map<String,Object> resultMap = new HashMap<String, Object>();
-        for(int i=0;i<referenceIdList.length;i++){
-            int j = i+1;
-            result+="["+j+"]"+styleService.styleTheReference(Integer.valueOf(referenceIdList[i]),Integer.valueOf(style));
-            result+="\n";
-        }
-        resultMap.put("result",result);
+        String[] resultAndErrorMsg = styleService.getResultAndErrorMassage(referenceIdList,style);
+        resultMap.put("result",resultAndErrorMsg[0]);
+        resultMap.put("errorMassage",resultAndErrorMsg[1]);
         return resultMap;
     }
 
