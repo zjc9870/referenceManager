@@ -114,10 +114,15 @@
                                                             <td th:text="${reference.name}"></td>
                                                             <td th:text="${reference.conference}"></td>
                                                             <td><div class="am-btn-toolbar">
-                                                                <div class="am-btn-group am-btn-group-xs">
+                                                                <div th:if="${moment.getUser().getId()} ne ${moment.getLoginUser().getId()}"  class="am-btn-group am-btn-group-xs">
                                                                     <a class="am-btn am-btn-default am-btn-xs am-text-success am-round" th:href="${'/manager/referenceDetail?referenceId='+reference.id}"><span class="am-icon-search" title="查看条目"></span> </a>
                                                                     <a class="am-btn am-btn-default am-btn-xs am-text-secondary am-round" title="添加条目到我的研究" th:onclick="${'selectResearch('+reference.id+')'}" ><span class="am-icon-plus"></span></a>
                                                                 </div>
+
+                                                                <div th:if="${moment.getUser().getId()} eq ${moment.getLoginUser().getId()}"  class="am-btn-group am-btn-group-xs">
+                                                                    <a class="am-btn am-btn-default am-btn-xs am-text-success am-round" th:href="${'/manager/referenceDetail?referenceId='+reference.id}"><span class="am-icon-search" title="查看条目"></span> </a>
+                                                                </div>
+
                                                             </div></td>
                                                         </th:block>
                                                     </tr>
