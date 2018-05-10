@@ -70,4 +70,45 @@ public class UserService {
         userVo.setFriendList(friendService.getFriendByUser(userVo));
         return userVo;
     }
+
+    public int changePassword( String password,String newpassword,String newpasswordconfirm){
+        UserVo userVo=getLoginUser();
+        List<User> userList = userRepository.findAll();
+
+        int result=2;
+        int olduserid=0;
+        int newuserid=userVo.getId();
+
+        for(User user:userList) {
+            olduserid= user.getId();
+            if (olduserid==newuserid) {
+
+
+                if (user.getPassword().equals(password)) {
+
+                    if(newpassword==""||newpasswordconfirm=="")
+                    {
+                        result=3;//"密码不能为空！"
+                        return result;
+                    }
+                    if (!newpassword.equals(newpasswordconfirm)) {
+                        result = 0;//"两次密码输入不同，请重新输入。";
+                    } else {
+                        User newuser = new User();
+                        newuser.setId(user.getId());
+                        newuser.setPassword(newpassword);
+                        newuser.setUsername(user.getUsername());
+                        userRepository.save(newuser);
+                        result = 1;//"跟新成功！";
+                    }
+                } else {
+                    result =2; //"原密码输入错误，请重新输入。";
+                }
+            }
+        }
+
+        return result;
+    }
+
+
 }

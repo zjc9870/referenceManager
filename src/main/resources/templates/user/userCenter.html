@@ -15,9 +15,12 @@
     <link rel="stylesheet" th:href="@{/css/amazeui.css}"/>
     <link rel="stylesheet" th:href="@{/css/admin.css}"/>
     <link rel="stylesheet" th:href="@{/css/paginate/style.css}"/>
+    <link rel="stylesheet" th:href="@{/css/sweetalert/sweetalert.css}"/>
     <script th:src="@{/scripts/jquery-2.1.4.js}"></script>
     <script th:src="@{/scripts/amaz/amazeui.min.js}"></script>
     <script th:src="@{/scripts/amaz/app.js}"></script>
+    <script th:src="@{/scripts/user/passwordManage.js}" type="text/javascript"></script>
+    <script th:src="@{/scripts/sweetalert/sweetalert.min.js}"></script>
 </head>
 
 <body>
@@ -78,7 +81,7 @@
 
                     <div class="am-form-group am-cf">
                         <div class="you" style="margin-left: 11%;">
-                            <div id="output" onclick="output" class="am-btn am-btn-success am-radius">修改密码</div>
+                            <div id="output" onclick="output()" class="am-btn am-btn-success am-radius">修改密码</div>
                         </div>
                     </div>
                 </form>
@@ -89,6 +92,7 @@
         </div>
     </div>
 </div>
+
 <script th:src="@{/scripts/paginate/jquery.paginate.js}"></script>
 <script th:src="@{/scripts/common.js}"></script>
 <script th:src="@{/scripts/manager/researchDetail.js}"></script>
