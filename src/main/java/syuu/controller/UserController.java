@@ -81,6 +81,16 @@ public class UserController {
         return mv;
     }
 
+    //修改密码
+    @RequestMapping("/changePassword")
+    @ResponseBody
+    public int changePassword(String password,String newpassword,String newpasswordconfirm)
+    {
+        int result=userService.changePassword(password,newpassword,newpasswordconfirm);
+        return result;
+        // System.out.println("password:"+password+" newpassword:"+newpassword+" newpasswordconfirm:"+newpasswordconfirm+" result:"+result);
+    }
+
     //返回侧导航栏内容
     @RequestMapping("/sideMenuContent")
     @ResponseBody
